@@ -71,10 +71,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- 2. Configure SystemJS -->
   <script src="systemjs.config.js"></script>
+  <!-- move this to app.js for late loading after template loaded -->
+  <!--
   <script>
     System.import('scripts/angular2-site/main').catch(function(err){ console.error(err); });
   </script>
-
+  -->
 </head>
 
 <body unresolved>
