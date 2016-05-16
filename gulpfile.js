@@ -1,11 +1,11 @@
 /*
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
-*/
+ Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+ This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ Code distributed by Google as part of the polymer project is also
+ subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
 
 'use strict';
 
@@ -53,8 +53,8 @@ var dist = function(subpath) {
 
 var styleTask = function(stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
-      return path.join('app', stylesPath, src);
-    }))
+    return path.join('app', stylesPath, src);
+  }))
     .pipe($.changed(stylesPath, {extension: '.css'}))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
@@ -147,7 +147,7 @@ gulp.task('copy', ['ts-compile'], function() {
     preserveComments: 'some'
   })).pipe(gulp.dest(dist('scripts/angular2-site')));
 
-    var rxjs = gulp.src([
+  var rxjs = gulp.src([
     './node_modules/rxjs/**/**.js',
     '!./node_modules/rxjs/bundles/**/*',
     '!./node_modules/rxjs/src/**/*',
@@ -221,7 +221,7 @@ gulp.task('copy-angular2-tmp', function() {
     './node_modules/zone.js/dist/zone.js'
   ])
     .pipe(gulp.dest('.tmp/scripts'))
-  
+
   return merge(rxjs, umds, mem, etc)
     .pipe($.size({
       title: 'angular2 copy'
@@ -271,24 +271,24 @@ gulp.task('cache-config', function(callback) {
   };
 
   glob([
-    'index.html',
-    './',
-    'bower_components/webcomponentsjs/webcomponents-lite.min.js',
-    '{elements,scripts,styles}/**/*.*'],
+      'index.html',
+      './',
+      'bower_components/webcomponentsjs/webcomponents-lite.min.js',
+      '{elements,scripts,styles}/**/*.*'],
     {cwd: dir}, function(error, files) {
-    if (error) {
-      callback(error);
-    } else {
-      config.precache = files;
+      if (error) {
+        callback(error);
+      } else {
+        config.precache = files;
 
-      var md5 = crypto.createHash('md5');
-      md5.update(JSON.stringify(config.precache));
-      config.precacheFingerprint = md5.digest('hex');
+        var md5 = crypto.createHash('md5');
+        md5.update(JSON.stringify(config.precache));
+        config.precacheFingerprint = md5.digest('hex');
 
-      var configPath = path.join(dir, 'cache-config.json');
-      fs.writeFile(configPath, JSON.stringify(config), callback);
-    }
-  });
+        var configPath = path.join(dir, 'cache-config.json');
+        fs.writeFile(configPath, JSON.stringify(config), callback);
+      }
+    });
 });
 
 // Clean output directory
@@ -297,7 +297,7 @@ gulp.task('clean', function() {
 });
 
 // Watch files for changes & reload
-gulp.task('serve', ['styles', 'copy-angular2-tmp'], function() {
+gulp.task('serve', ['styles', 'ts-compile','copy-angular2-tmp'], function() {
   browserSync({
     port: 5000,
     notify: false,
@@ -324,6 +324,7 @@ gulp.task('serve', ['styles', 'copy-angular2-tmp'], function() {
   gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
   gulp.watch(['app/scripts/**/*.js'], reload);
   gulp.watch(['app/images/**/*'], reload);
+  gulp.watch(['ts/**/*.ts'], ['ts-compile',reload]);
 });
 
 // Build and serve the output from the dist build
@@ -370,8 +371,8 @@ gulp.task('build-deploy-gh-pages', function(cb) {
 // Deploy to GitHub pages gh-pages branch
 gulp.task('deploy-gh-pages', function() {
   return gulp.src(dist('**/*'))
-    // Check if running task from Travis CI, if so run using GH_TOKEN
-    // otherwise run using ghPages defaults.
+  // Check if running task from Travis CI, if so run using GH_TOKEN
+  // otherwise run using ghPages defaults.
     .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
       remoteUrl: 'https://$GH_TOKEN@github.com/polymerelements/polymer-starter-kit.git',
       silent: true,
