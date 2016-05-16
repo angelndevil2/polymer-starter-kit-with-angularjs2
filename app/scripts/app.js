@@ -34,7 +34,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // have resolved and content has been stamped to the page
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
-    System.import('scripts/angular2-site/main').catch(function(err){ console.error(err); });
+    // System.import('scripts/angular2-site/main').catch(function(err){ console.error(err); });
   });
 
   // See https://github.com/Polymer/polymer/issues/1381
